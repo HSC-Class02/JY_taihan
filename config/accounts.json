@@ -1,0 +1,18 @@
+{
+  "revenue": ["ifrs-full_Revenue", "ifrs-full_RevenueFromContractsWithCustomers", "매출액", "수익(매출액)"],
+  "cost_of_sales": ["ifrs-full_CostOfSales", "매출원가"],
+  "gross_profit": ["ifrs-full_GrossProfit", "매출총이익"],
+  "operating_income": ["dart_OperatingIncomeLoss", "ifrs-full_ProfitLossFromOperatingActivities", "영업이익"],
+  "profit_before_tax": ["ifrs-full_ProfitLossBeforeTax", "법인세비용차감전순이익"],
+  "net_income": ["ifrs-full_ProfitLoss", "당기순이익", "연결당기순이익"],
+  "current_assets": ["ifrs-full_CurrentAssets", "유동자산"],
+  "total_assets": ["ifrs-full_Assets", "자산총계"],
+  "cash": ["ifrs-full_CashAndCashEquivalents", "현금및현금성자산"],
+  "receivables": ["ifrs-full_TradeAndOtherCurrentReceivables", "ifrs-full_TradeReceivables", "매출채권"],
+  "inventory": ["ifrs-full_Inventories", "재고자산"],
+  "current_liabilities": ["ifrs-full_CurrentLiabilities", "유동부채"],
+  "total_liabilities": ["ifrs-full_Liabilities", "부채총계"],
+  "total_equity": ["ifrs-full_Equity", "자본총계"],
+  "operating_cash_flow": ["ifrs-full_NetCashFlowsFromUsedInOperatingActivities", "ifrs-full_CashFlowsFromUsedInOperatingActivities", "영업활동으로인한현금흐름", "영업활동현금흐름"],
+  "capex": ["ifrs-full_PurchaseOfPropertyPlantAndEquipment", "유형자산의취득"]
+}

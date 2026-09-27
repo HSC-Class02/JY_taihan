@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>대한전선 | OpenDART 재무 대시보드</title>
+  <style>
+    :root{--ink:#10213b;--blue:#1455a2;--sky:#eaf3ff;--line:#dce5f0;--muted:#65748a}
+    *{box-sizing:border-box}body{margin:0;background:#f6f8fc;color:var(--ink);font-family:Arial,'Malgun Gothic',sans-serif}button{font:inherit}
+    .wrap{max-width:1240px;margin:auto;padding:32px 22px 56px}header{display:flex;justify-content:space-between;align-items:center;gap:20px;border-bottom:1px solid var(--line);padding-bottom:24px}header img{width:110px;height:32px;object-fit:contain}
+    .eyebrow{color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.12em}.subtitle{color:var(--muted);margin:7px 0 0}.status{font-size:13px;color:var(--muted);margin-top:6px;text-align:right}h1{margin:5px 0;font-size:30px}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:25px 0}.card,.panel{background:white;border:1px solid var(--line);border-radius:14px;box-shadow:0 4px 18px #10213b08}.card{padding:18px}.card .label{font-size:13px;color:var(--muted)}.card strong{display:block;margin-top:9px;font-size:23px}
+    .grid{display:grid;grid-template-columns:2fr 1fr;gap:16px}.panel{padding:20px}.panel h2{font-size:16px;margin:0 0 15px}canvas{width:100%;height:245px;background:linear-gradient(#fff,#f8fbff);border-radius:8px}.legend{font-size:12px;color:var(--muted);line-height:1.8}
+    .tables,.peers-table{margin-top:22px}.period-block{margin-top:24px}.period-block:first-of-type{margin-top:8px}.period-title{display:flex;align-items:center;gap:10px;margin:0 0 10px;font-size:15px}.period-title::before{content:'';width:4px;height:18px;border-radius:4px;background:var(--blue)}
+    .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:10px}table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;overflow:hidden}th{background:#eff5fd;text-align:right;padding:12px 10px;border-bottom:1px solid var(--line);white-space:nowrap}td{text-align:right;padding:11px 10px;border-bottom:1px solid #edf1f6;white-space:nowrap}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:#f8fbff}th:first-child,td:first-child{text-align:left;font-weight:600}
+    .section-lead{color:var(--muted);font-size:13px;line-height:1.6;margin:-6px 0 16px}.peer-table th,.peer-table td{text-align:left;white-space:normal;vertical-align:top;line-height:1.55}.peer-table th:nth-child(1){width:17%}.peer-table th:nth-child(2){width:15%}.peer-table th:nth-child(3){width:31%}.peer-table a{color:var(--blue);font-weight:700;text-decoration:none}.peer-table a:hover{text-decoration:underline}.note{color:var(--muted);font-size:12px;line-height:1.65;margin:15px 0 0}
+    .floating-export{position:fixed;right:18px;top:46%;z-index:20;display:flex;flex-direction:column;gap:9px;filter:drop-shadow(0 8px 18px #10213b22)}.export-btn{width:76px;min-height:46px;border:1px solid #cbd9eb;border-radius:12px;background:#fff;color:var(--ink);font-weight:800;cursor:pointer;transition:.18s ease}.export-btn:hover,.export-btn:focus-visible{color:#fff;background:var(--blue);border-color:var(--blue);transform:translateY(-1px);outline:none}.export-btn span{display:block;font-size:10px;font-weight:500;margin-top:2px;color:var(--muted)}.export-btn:hover span,.export-btn:focus-visible span{color:#dbeaff}
+    .excel-control{position:relative}.excel-menu{position:absolute;right:86px;bottom:0;width:178px;padding:10px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px #10213b26}.excel-menu[hidden]{display:none}.excel-menu-title{padding:4px 7px 9px;color:var(--muted);font-size:11px;font-weight:700}.excel-menu button{display:block;width:100%;padding:10px;border:0;border-radius:8px;background:transparent;text-align:left;color:var(--ink);cursor:pointer}.excel-menu button:hover,.excel-menu button:focus-visible{background:var(--sky);color:var(--blue);outline:none}
+    .export-status{position:fixed;right:18px;top:calc(46% + 110px);z-index:19;max-width:240px;padding:9px 12px;border-radius:9px;background:var(--ink);color:#fff;font-size:11px;box-shadow:0 6px 18px #10213b22}.export-status[hidden]{display:none}
+    @media(max-width:800px){.kpis{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}header{align-items:flex-start}.wrap{padding:22px 14px 100px}h1{font-size:24px}.floating-export{top:auto;right:14px;bottom:14px;flex-direction:row}.excel-menu{right:0;bottom:56px}.export-status{top:auto;right:14px;bottom:72px}}
+    @media print{@page{size:A4 landscape;margin:10mm}body{background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}.wrap{max-width:none;padding:0}.floating-export,.export-status{display:none!important}.card,.panel{box-shadow:none}.panel,.card,.period-block,.peers-table{break-inside:avoid}.table-wrap{overflow:visible}table{font-size:9px}th,td{padding:6px 5px}a{color:inherit!important;text-decoration:none!important}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header><div><div class="eyebrow">OPEN DART • FINANCIAL INTELLIGENCE</div><h1>대한전선 재무 대시보드</h1><p class="subtitle">사업·반기·분기 보고서 기반 핵심 수치와 재무비율</p></div><div><img src="assets/taihan-badge.png" alt="대한전선"><div class="status" id="updated">데이터 불러오는 중</div></div></header>
+    <section class="kpis" id="kpis"></section>
+    <section class="grid"><div class="panel"><h2>매출액 · 영업이익 추이</h2><canvas id="trend" width="760" height="245"></canvas></div><div class="panel"><h2>최근 Annual 수익성</h2><canvas id="margin" width="340" height="245"></canvas><div class="legend">매출총이익률 · 영업이익률 · 순이익률</div></div></section>
+    <section class="tables panel"><h2>상세 재무 데이터</h2><div id="period-tables"></div><p class="note">단위: 원(비율은 %). 분기/반기는 누적 공시 기준일 수 있습니다. OpenDART 공시 원문을 기반으로 하며 투자 권유 목적이 아닙니다.</p></section>
+    <section class="peers-table panel" aria-labelledby="peer-title">
+      <h2 id="peer-title">국내 Peer firms</h2>
+      <p class="section-lead">사업 중첩도, 지배관계, 상장 여부와 재무자료 접근성을 함께 고려한 비교기업 분류입니다.</p>
+      <div class="table-wrap"><table class="peer-table">
+        <thead><tr><th>분류</th><th>기업</th><th>대한전선과 겹치는 주요 사업</th><th>비교 시 유의사항</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Core peer</strong></td><td><a href="https://www.lscns.co.kr/" target="_blank" rel="noopener">LS전선 ↗</a></td><td>초고압·전력·해저케이블 및 시공 솔루션</td><td>비상장사이므로 공개 재무자료 기반의 직접적인 가치평가 비교에는 제약이 있음</td></tr>
+          <tr><td><strong>Partial direct peer</strong></td><td><a href="https://www.iljinelectric.co.kr/main?lang=ko" target="_blank" rel="noopener">일진전기 ↗</a></td><td>초고압·중저압 전력케이블, 접속재 및 전력 인프라</td><td>변압기·차단기 등 중전기 사업 비중이 있어 케이블 기업 간 마진 비교 시 사업부 구성을 고려해야 함</td></tr>
+          <tr><td><strong>Secondary listed peer</strong></td><td><a href="https://www.daewoncable.co.kr/" target="_blank" rel="noopener">대원전선 ↗</a></td><td>전력·통신·자동차용 전선</td><td>범용·중저압 제품 비중과 기업 규모 차이가 커 보조 비교기업으로 활용</td></tr>
+          <tr><td><strong>Affiliate / operating benchmark</strong></td><td><a href="https://www.gaoncable.com/" target="_blank" rel="noopener">가온전선 ↗</a></td><td>전력·통신·특수케이블 및 배전 솔루션</td><td>LS전선 계열사이므로 독립적인 가치평가 비교보다 제품 믹스·운영지표 비교에 활용</td></tr>
+          <tr><td><strong>Specialist benchmark</strong></td><td><a href="https://www.lynxeogroup.com/ko/" target="_blank" rel="noopener">극동전선 (Lynxeo Korea) ↗</a></td><td>선박·해양, 철도, 자동차 및 산업용 특수 케이블</td><td>비상장 해외계열 법인으로 공개 재무자료가 제한적이므로 특수 케이블 사업 비교에 한정</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note"><strong>활용 원칙:</strong> 상장사 재무·가치평가는 일진전기와 대원전선을 보조 비교군으로 활용합니다. LS전선·가온전선·극동전선은 제품 포트폴리오와 시장 노출도 비교에 사용합니다.</p>
+    </section>
+  </main>
+  <aside class="floating-export" aria-label="대시보드 내보내기">
+    <button class="export-btn" id="pdf-download" type="button">PDF<span>화면 출력</span></button>
+    <div class="excel-control"><button class="export-btn" id="excel-toggle" type="button" aria-expanded="false" aria-controls="excel-menu">Excel<span>데이터 저장</span></button><div class="excel-menu" id="excel-menu" hidden><div class="excel-menu-title">다운로드 기간 선택</div><button type="button" data-export-category="annual">연간 · Annual</button><button type="button" data-export-category="half_year">반기 · Half-year</button><button type="button" data-export-category="quarterly">분기 · Quarterly</button></div></div>
+  </aside>
+  <div class="export-status" id="export-status" role="status" aria-live="polite" hidden></div>
+  <script src="assets/dashboard-export.js"></script>
+  <script>
+    const fmt=n=>n==null?'—':Math.abs(n)>=1e12?(n/1e12).toFixed(1)+'조':Math.abs(n)>=1e8?(n/1e8).toFixed(0)+'억':Number(n).toLocaleString('ko-KR');
+    const cols=[['period','기간'],['revenue','매출액'],['operating_income','영업이익'],['net_income','당기순이익'],['total_assets','자산총계'],['total_liabilities','부채총계'],['total_equity','자본총계'],['operating_cash_flow','영업현금흐름'],['free_cash_flow','잉여현금흐름'],['operating_margin_pct','영업이익률'],['roe_pct','ROE'],['current_ratio_pct','유동비율'],['debt_to_equity_pct','부채비율']];let data=[];
+    function latest(cat='annual'){return data.filter(x=>x.category===cat).at(-1)||{}}
+    function cards(){const r=latest();const values=[['최근 Annual 매출액',fmt(r.revenue)],['영업이익',fmt(r.operating_income)],['영업이익률',r.operating_margin_pct==null?'—':r.operating_margin_pct+'%'],['부채비율',r.debt_to_equity_pct==null?'—':r.debt_to_equity_pct+'%']];document.querySelector('#kpis').innerHTML=values.map(x=>`<div class="card"><span class="label">${x[0]}</span><strong>${x[1]}</strong></div>`).join('')}
+    function graph(id,series,colors){const c=document.getElementById(id),x=c.getContext('2d'),w=c.width,h=c.height;x.clearRect(0,0,w,h);const all=series.flatMap(s=>s.values).filter(v=>v!=null),max=Math.max(...all.map(Math.abs),1);x.strokeStyle='#dce5f0';for(let y=30;y<h;y+=45){x.beginPath();x.moveTo(35,y);x.lineTo(w-10,y);x.stroke()}series.forEach((s,j)=>{x.strokeStyle=colors[j];x.lineWidth=3;x.beginPath();s.values.forEach((v,i)=>{const px=45+i*(w-70)/Math.max(s.values.length-1,1),py=h-25-(v||0)/max*(h-55);i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke()})}
+    function draw(){const annual=data.filter(x=>x.category==='annual');graph('trend',[{values:annual.map(x=>x.revenue)},{values:annual.map(x=>x.operating_income)}],['#1455a2','#18a37b']);const r=latest(),vals=[r.gross_margin_pct||0,r.operating_margin_pct||0,r.net_margin_pct||0],c=document.getElementById('margin'),x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);vals.forEach((v,i)=>{x.fillStyle=['#1455a2','#18a37b','#f29f3d'][i];x.fillRect(30+i*95,220-v*3,52,v*3);x.fillStyle='#10213b';x.fillText(v.toFixed(1)+'%',25+i*95,235)})}
+    function tableMarkup(cat,title){const rows=data.filter(x=>x.category===cat).slice().reverse();const body=rows.length?rows.map(r=>'<tr>'+cols.map(([k])=>'<td>'+((k.endsWith('_pct'))?(r[k]==null?'—':r[k]+'%'):(k==='period'?r[k]:fmt(r[k])))+'</td>').join('')+'</tr>').join(''):'<tr><td colspan="13">아직 수집된 데이터가 없습니다.</td></tr>';return '<section class="period-block"><h3 class="period-title">'+title+'</h3><div class="table-wrap"><table><thead><tr>'+cols.map(c=>'<th>'+c[1]+'</th>').join('')+'</tr></thead><tbody>'+body+'</tbody></table></div></section>'}
+    function renderTables(){document.querySelector('#period-tables').innerHTML=tableMarkup('annual','Annual · 사업보고서')+tableMarkup('half_year','Half-year · 반기보고서')+tableMarkup('quarterly','Quarterly · 분기보고서')}
+    fetch('data/dashboard.json').then(r=>r.json()).then(d=>{data=d.records||[];document.querySelector('#updated').textContent='최종 갱신: '+(d.updated_at||'—');cards();draw();renderTables();window.DashboardExport.setData(data)}).catch(()=>{document.querySelector('#updated').textContent='데이터 준비 전';renderTables();window.DashboardExport.setData([])});
+  </script>
+</body>
+</html>
