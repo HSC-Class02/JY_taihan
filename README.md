@@ -18,6 +18,24 @@
 - 재무비율: 성장률, 매출총/영업/순이익률, ROA, ROE, 유동·당좌비율, 부채비율, 재고회전율, DSO, CFO 전환율, FCF
 - GitHub Actions: 매월 1일 09:00 KST 자동 갱신 및 GitHub Pages 재배포
 
+## 국내 Peer firms
+
+Peer는 사업 중첩도, 상장 여부 및 비교 가능한 재무자료의 접근성을 함께 고려했습니다. 대한전선의 전력·통신·해저·산업용 케이블 사업을 기준으로 한 참고용 분류입니다.
+
+| 분류 | 기업 | 대한전선과 겹치는 주요 사업 | 비교 시 유의사항 |
+| --- | --- | --- | --- |
+| **Core peer** | [LS전선](https://www.lscns.co.kr/) | 초고압·전력·해저케이블 및 시공 솔루션 | 비상장사이므로 공개 재무자료 기반의 직접적인 가치평가 비교에는 제약이 있습니다. |
+| **Partial direct peer** | [일진전기](https://www.iljinelectric.co.kr/main?lang=ko) | 초고압·중저압 전력케이블, 접속재 및 전력 인프라 | 변압기·차단기 등 중전기 사업 비중을 함께 고려해야 합니다. |
+| **Secondary listed peer** | [대원전선](https://www.daewoncable.co.kr/) | 전력·통신·자동차용 전선 | 범용·중저압 제품 비중과 회사 규모 차이가 있어 보조 비교군으로 활용합니다. |
+| **Affiliate / operating benchmark** | [가온전선](https://www.gaoncable.com/) | 전력·통신·특수케이블 및 배전 솔루션 | LS전선 계열사이므로 독립적인 가치평가보다는 제품 믹스·운영지표 비교에 적합합니다. |
+| **Specialist benchmark** | [극동전선 (Lynxeo Korea)](https://www.lynxeogroup.com/ko/) | 선박·해양, 철도, 자동차 및 산업용 특수 케이블 | 비상장 해외계열 법인으로 공개 재무자료가 제한적입니다. |
+
+### Peer 활용 원칙
+
+- 상장사 재무·가치평가는 일진전기와 대원전선을 보조 비교군으로 활용합니다.
+- LS전선·가온전선·극동전선은 제품 포트폴리오와 시장 노출도 비교에 활용합니다.
+- 전선 외 사업 비중, 상장 여부, 연결 범위를 함께 확인해 단순 수치 비교를 피합니다.
+
 ## API 키 및 Pages 설정
 
 1. [OpenDART](https://opendart.fss.or.kr/)에서 인증키를 발급받습니다.
