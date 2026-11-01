@@ -127,11 +127,13 @@ def fetch_financial(task: tuple[int, str, str, pathlib.Path, str]) -> pathlib.Pa
         "reprt_code": report_code,
         "fs_div": "CFS",
     }
+    fs_div_used = "CFS"
     data = get_json("fnlttSinglAcntAll.json", params)
     if str(data.get("status")) == "013":
+        fs_div_used = "OFS"
         data = get_json(
             "fnlttSinglAcntAll.json",
-            {**params, "fs_div": "OFS"},
+            {**params, "fs_div": fs_div_used},
         )
     if str(data.get("status")) == "013" or not data.get("list"):
         return None
@@ -141,7 +143,7 @@ def fetch_financial(task: tuple[int, str, str, pathlib.Path, str]) -> pathlib.Pa
         "reprt_code": report_code,
         "category": category,
         "corp_code": CORP_CODE,
-        "fs_div_used": params["fs_div"] if str(data.get("status")) == "000" else "OFS",
+        "fs_div_used": fs_div_used,
     })
     output.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     return output
