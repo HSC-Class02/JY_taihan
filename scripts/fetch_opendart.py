@@ -190,13 +190,17 @@ def main(start_year: int) -> None:
     source_dir = ROOT / "reports" / "source"
     source_dir.mkdir(parents=True, exist_ok=True)
 
+    # Disclosure search can start in 2010, but OpenDART's structured
+    # financial-statement endpoints accept business years from 2015 onward.
     years = list(range(start_year, dt.date.today().year + 1))
+    financial_years = list(range(max(start_year, 2015), dt.date.today().year + 1))
+
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
         listing_results = list(pool.map(lambda year: listing_for(year, key), years))
     disclosures = [item for rows in listing_results for item in rows]
 
     financial_tasks = []
-    for year in years:
+    for year in financial_years:
         for report_code, category in REPORTS.items():
             output = raw_dir / f"taihan_{year}_{report_code}.json"
             if not valid_cached_file(output):
